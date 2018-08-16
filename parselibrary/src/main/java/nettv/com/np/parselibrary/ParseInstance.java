@@ -35,7 +35,7 @@ public class ParseInstance {
 
 
     public enum ParseModels {
-        USER_DATA, USER_MESSAGES
+        USER_DATA, USER_MESSAGES,USER_CHANNELS
     }
 
 
@@ -130,6 +130,17 @@ public class ParseInstance {
                 subscriptionHandlingUserMessage.handleEvents(new SubscriptionHandling.HandleEventsCallback<UserMessage>() {
                     @Override
                     public void onEvents(ParseQuery<UserMessage> query, SubscriptionHandling.Event event, UserMessage parseMessage) {
+                        getListenerInfo().liveQueryResponseListener.onLiveQueryResponse(UserMessage.class, query, event, parseMessage);
+                    }
+                });
+                break;
+            case USER_CHANNELS:
+                ParseQuery<UserChannel> querUserChannel = ParseQuery.getQuery(UserChannel.class);
+                querUserChannel.whereEqualTo(UserMessage.KEY_SERIAL, serial);
+                SubscriptionHandling<UserChannel> subscriptionHandlingUserChannel = parseLiveQueryClient.subscribe(querUserChannel);
+                subscriptionHandlingUserChannel.handleEvents(new SubscriptionHandling.HandleEventsCallback<UserChannel>() {
+                    @Override
+                    public void onEvents(ParseQuery<UserChannel> query, SubscriptionHandling.Event event, UserChannel parseMessage) {
                         getListenerInfo().liveQueryResponseListener.onLiveQueryResponse(UserMessage.class, query, event, parseMessage);
                     }
                 });
