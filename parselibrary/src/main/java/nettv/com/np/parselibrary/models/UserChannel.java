@@ -82,7 +82,7 @@ public class UserChannel extends ParseObject{
 
     public int getType() {
         //return type;
-        return getInt(KEY_ID);
+        return getInt(KEY_TYPE);
     }
 
     public void setType(Type type) {
